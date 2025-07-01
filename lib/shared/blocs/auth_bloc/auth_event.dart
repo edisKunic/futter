@@ -11,11 +11,20 @@ class AuthCheckRequested extends AuthEvent {}
 
 class AuthLoggedIn extends AuthEvent {
   final String token;
+  final String refreshToken;
+  final DateTime accessTokenExpiry;
+  final DateTime refreshTokenExpiry;
 
-  const AuthLoggedIn(this.token);
+  const AuthLoggedIn({
+    required this.token,
+    required this.refreshToken,
+    required this.accessTokenExpiry,
+    required this.refreshTokenExpiry,
+  });
 
   @override
-  List<Object?> get props => [token];
+  List<Object?> get props =>
+      [token, refreshToken, accessTokenExpiry, refreshTokenExpiry];
 }
 
 class AuthLoggedOut extends AuthEvent {}

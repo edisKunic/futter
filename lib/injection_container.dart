@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'core/network/network_info.dart';
 import 'core/services/storage_service.dart';
+import 'core/services/token_service.dart';
 import 'shared/services/api_service.dart';
 
 final GetIt sl = GetIt.instance;
@@ -24,6 +25,7 @@ Future<void> _initCore() async {
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton<StorageService>(() => StorageServiceImpl(sl()));
+  sl.registerLazySingleton<TokenService>(() => TokenServiceImpl());
 }
 
 Future<void> _initShared() async {

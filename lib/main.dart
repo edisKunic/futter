@@ -12,8 +12,8 @@ import 'shared/blocs/app_bloc/app_bloc.dart';
 import 'shared/blocs/app_bloc/app_event.dart';
 import 'shared/blocs/app_bloc/app_state.dart';
 import 'shared/blocs/connectivity_cubit/connectivity_cubit.dart';
-import 'features/home/presentation/pages/home_page.dart';
 import 'features/auth/presentation/pages/login_page.dart';
+import 'shared/presentation/pages/main_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 } else if (authState is Authenticated) {
-                  return const HomePage();
+                  return const MainApp();
                 } else {
                   return const LoginPage();
                 }

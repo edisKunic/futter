@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../core/services/storage_service.dart';
+import '../../../core/services/token_service.dart';
+import '../../../core/models/token_model.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final StorageService _storageService = GetIt.instance<StorageService>();
+  final TokenService _tokenService = GetIt.instance<TokenService>();
 
   AuthBloc() : super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
@@ -19,9 +20,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    final token = await _storageService.getString('auth_token');
-    if (token != null && token.isNotEmpty) {
-      emit(Authenticated(token));
+    final isValid = await _tokenService.isTokenValid();
+    if (isValid) {
+      final tokens = await _tokenService.getTokens();
+      emit(Authenticated(tokens!.accessToken));
     } else {
       emit(Unauthenticated());
     }
@@ -32,7 +34,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    await _storageService.setString('auth_token', event.token);
+    final tokens = TokenModel(
+      accessToken: event.token,
+      refreshToken: event.refreshToken,
+      accessTokenExpiry: event.accessTokenExpiry,
+      refreshTokenExpiry: event.refreshTokenExpiry,
+    );
+    await _tokenService.saveTokens(tokens);
     emit(Authenticated(event.token));
   }
 
@@ -41,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    await _storageService.remove('auth_token');
+    await _tokenService.clearTokens();
     emit(Unauthenticated());
   }
 }

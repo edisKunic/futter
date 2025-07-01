@@ -1,6 +1,7 @@
 class AppConstants {
   static const String appName = 'Futter';
   static const String authTokenKey = 'auth_token';
+  static const String tokenKey = 'tokens';
   static const String isDarkModeKey = 'is_dark_mode';
 
   static const int connectionTimeout = 30000;

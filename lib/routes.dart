@@ -4,9 +4,11 @@ import 'features/auth/presentation/pages/login_page.dart';
 import 'features/home/presentation/pages/home_page.dart';
 import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/watchlist/presentation/pages/watchlist_page.dart';
+import 'shared/presentation/pages/main_app.dart';
 
 class AppRoutes {
   static const String login = '/login';
+  static const String mainApp = '/main';
   static const String home = '/home';
   static const String profile = '/profile';
   static const String watchlist = '/watchlist';
@@ -15,6 +17,8 @@ class AppRoutes {
     switch (settings.name) {
       case login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
+      case mainApp:
+        return MaterialPageRoute(builder: (_) => const MainApp());
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case profile:
