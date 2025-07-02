@@ -12,6 +12,7 @@ import 'shared/blocs/app_bloc/app_bloc.dart';
 import 'shared/blocs/app_bloc/app_event.dart';
 import 'shared/blocs/app_bloc/app_state.dart';
 import 'shared/blocs/connectivity_cubit/connectivity_cubit.dart';
+import 'shared/blocs/theme_bloc/theme_bloc.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'shared/presentation/pages/main_app.dart';
 
@@ -29,13 +30,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc()..add(AuthCheckRequested()),
+          create: (context) =>
+              GetIt.instance<AuthBloc>()..add(AuthCheckRequested()),
         ),
         BlocProvider<AppBloc>(
-          create: (context) => AppBloc()..add(AppStarted()),
+          create: (context) => GetIt.instance<AppBloc>()..add(AppStarted()),
         ),
         BlocProvider<ConnectivityCubit>(
-          create: (context) => ConnectivityCubit(),
+          create: (context) => GetIt.instance<ConnectivityCubit>(),
+        ),
+        BlocProvider<ThemeBloc>(
+          create: (context) => GetIt.instance<ThemeBloc>(),
         ),
       ],
       child: BlocBuilder<AppBloc, AppState>(
@@ -44,9 +49,7 @@ class MyApp extends StatelessWidget {
             title: 'Futter App',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: state is AppLoaded && state.isDarkMode
-                ? ThemeMode.dark
-                : ThemeMode.light,
+            themeMode: ThemeMode.system,
             onGenerateRoute: AppRoutes.generateRoute,
             home: BlocBuilder<AuthBloc, AuthState>(
               builder: (context, authState) {

@@ -12,14 +12,8 @@ class AppInitial extends AppState {}
 class AppLoading extends AppState {}
 
 class AppLoaded extends AppState {
-  final bool isDarkMode;
-
-  const AppLoaded({this.isDarkMode = false});
+  const AppLoaded();
 
   @override
-  List<Object?> get props => [isDarkMode];
-
-  AppLoaded copyWith({bool? isDarkMode}) {
-    return AppLoaded(isDarkMode: isDarkMode ?? this.isDarkMode);
-  }
+  List<Object?> get props => [];
 }

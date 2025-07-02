@@ -6,7 +6,12 @@ import 'package:http/http.dart' as http;
 import 'core/network/network_info.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/token_service.dart';
+import 'core/theme/theme_manager.dart';
 import 'shared/services/api_service.dart';
+import 'shared/blocs/theme_bloc/theme_bloc.dart';
+import 'shared/blocs/connectivity_cubit/connectivity_cubit.dart';
+import 'shared/blocs/auth_bloc/auth_bloc.dart';
+import 'shared/blocs/app_bloc/app_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -26,10 +31,18 @@ Future<void> _initCore() async {
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton<StorageService>(() => StorageServiceImpl(sl()));
   sl.registerLazySingleton<TokenService>(() => TokenServiceImpl());
+
+  sl.registerLazySingleton<ThemeManager>(() => ThemeManager());
+  await sl<ThemeManager>().initialize();
 }
 
 Future<void> _initShared() async {
   sl.registerLazySingleton<ApiService>(() => ApiService());
+
+  sl.registerFactory<ThemeBloc>(() => ThemeBloc());
+  sl.registerFactory<ConnectivityCubit>(() => ConnectivityCubit());
+  sl.registerFactory<AuthBloc>(() => AuthBloc());
+  sl.registerFactory<AppBloc>(() => AppBloc());
 }
 
 Future<void> _initFeatures() async {
